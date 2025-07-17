@@ -2,7 +2,13 @@
     <x-slot name="header">Data Pasien</x-slot>
 
     <div class="max-w-7xl mx-auto py-6">
-        <div class="mb-4 flex justify-end">
+        <div class="mb-4 flex justify-between items-center">
+            <form method="GET" action="{{ route('pasien.index') }}" class="flex space-x-2">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari pasien..."
+                    class="border rounded p-2 text-sm text-gray-700" />
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">Cari</button>
+            </form>
+
             <a href="{{ route('pasien.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
                 + Tambah Pasien
             </a>
@@ -17,8 +23,16 @@
                 <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
                     <tr>
                         <th class="px-4 py-2">No</th>
-                        <th class="px-4 py-2">No Pasien</th>
-                        <th class="px-4 py-2">Nama</th>
+                        <th class="px-4 py-2">
+                            <a href="{{ route('pasien.index', array_merge(request()->all(), ['sort_by' => 'no_pasien', 'order' => ($sortBy == 'no_pasien' && $order == 'asc') ? 'desc' : 'asc'])) }}">
+                                No Pasien {!! $sortBy == 'no_pasien' ? ($order == 'asc' ? '↑' : '↓') : '' !!}
+                            </a>
+                        </th>
+                        <th class="px-4 py-2">
+                            <a href="{{ route('pasien.index', array_merge(request()->all(), ['sort_by' => 'nama', 'order' => ($sortBy == 'nama' && $order == 'asc') ? 'desc' : 'asc'])) }}">
+                                Nama {!! $sortBy == 'nama' ? ($order == 'asc' ? '↑' : '↓') : '' !!}
+                            </a>
+                        </th>
                         <th class="px-4 py-2">Alamat</th>
                         <th class="px-4 py-2">Tgl Lahir</th>
                         <th class="px-4 py-2">No Telepon</th>
