@@ -14,9 +14,13 @@ class PembayaranController extends Controller
         return view('pembayaran.index', compact('pembayarans'));
     }
 
-    public function create(Request $request)
+public function create(Request $request)
 {
-    $pemeriksaans = Pemeriksaan::with('pasien', 'obat')->get();
+    // Ambil pemeriksaan yang belum memiliki pembayaran
+    $pemeriksaans = Pemeriksaan::with('pasien', 'obat')
+        ->whereDoesntHave('pembayaran') 
+        ->get();
+
     $pemeriksaanTerpilih = null;
 
     if ($request->has('pemeriksaan_id')) {
@@ -25,6 +29,7 @@ class PembayaranController extends Controller
 
     return view('pembayaran.create', compact('pemeriksaans', 'pemeriksaanTerpilih'));
 }
+
 
 public function store(Request $request)
 {
